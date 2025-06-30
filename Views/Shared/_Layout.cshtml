@@ -36,14 +36,55 @@
         }
 
         function formatTelefone(input) {
-            let value = input.value.replace(/\D/g, '').slice(0, 11);
+            let value = input.value.replace(/\D/g, '');
+            let formattedValue = '';
+            let cursorPosition = input.selectionStart;
+
             if (value.length <= 10) {
-                value = value.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+                if (value.length > 2) {
+                    formattedValue += `(${value.slice(0, 2)}) `;
+                    value = value.slice(2);
+                } else {
+                    formattedValue += `(${value}`;
+                    return input.value = formattedValue;
+                }
+
+                if (value.length > 4) {
+                    formattedValue += `${value.slice(0, 4)}-`;
+                    value = value.slice(4);
+                } else {
+                    formattedValue += `${value}`;
+                    return input.value = formattedValue;
+                }
+
+                formattedValue += value;
             } else {
-                value = value.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
+                // Formatação de 11 dígitos (DDD + celular)
+                formattedValue += `(${value.slice(0, 2)}) `;
+                value = value.slice(2);
+
+                formattedValue += `${value.slice(0, 5)}-`;
+                value = value.slice(5);
+
+                formattedValue += value;
             }
-            input.value = value;
+
+            input.value = formattedValue;
+            let newCursorPosition = cursorPosition;
+
+            if (newCursorPosition > 2 && newCursorPosition <= 3) {
+                newCursorPosition = 4;
+            } else if (newCursorPosition > 6 && newCursorPosition <= 10) {
+                newCursorPosition = 11;
+            } else if (newCursorPosition > 11 && newCursorPosition <= 15) {
+                newCursorPosition = 16;
+            }
+
+            input.setSelectionRange(newCursorPosition, newCursorPosition);
         }
+
+
+        
     </script>
 
 </body>

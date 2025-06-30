@@ -1,6 +1,6 @@
 Projeto desenvolvido em C# MVC exibindo uma pagína simples de um CRUD de contatos.
 O banco de dados usado foi o Postgre e a query é:
-	CREATE TABLE PESSOAS (
+	CREATE TABLE CONTATOS (
 		Id SERIAL PRIMARY KEY,
 		Nome VARCHAR(100) NOT NULL,
 		Apelido  VARCHAR(100),
